@@ -1,5 +1,5 @@
 {
-  "site_url": "https://example.com",
+  "site_url": "https://nidheeshnarayanan.vercel.app",
   "gtm_id": "",
   "_help": "Set site_url to your domain (no trailing slash) and gtm_id to your container ID like GTM-XXXXXXX, then run: python3 tools/build_dist.py"
 }
