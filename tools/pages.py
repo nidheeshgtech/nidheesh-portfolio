@@ -33,7 +33,9 @@ for slug, *_ in P:
     m = re.search(r'<p class="case-intro">([^<]*)', open(f'work/{slug}.html').read())
     intro[slug] = m.group(1)
 
-def head(title, desc, prefix, extra=''):
+KEYWORDS = 'Nidheesh Narayanan, frontend developer Dubai, React developer Dubai, Next.js developer, WordPress developer Dubai, Arabic RTL websites, bilingual websites UAE, government websites UAE, web accessibility, WCAG'
+
+def head(title, desc, prefix, extra='', og='og.jpg', og_alt='Nidheesh Narayanan, senior frontend developer in Dubai: React, Next.js and WordPress'):
     return f'''<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
@@ -43,6 +45,7 @@ def head(title, desc, prefix, extra=''):
   <title>{title}</title>
   <meta name="description" content="{desc}">
   <meta name="author" content="Nidheesh Narayanan">
+  <meta name="keywords" content="{KEYWORDS}">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#ececeb">
   <meta name="format-detection" content="telephone=no">
@@ -51,14 +54,16 @@ def head(title, desc, prefix, extra=''):
   <meta property="og:locale" content="en_AE">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta property="og:image" content="{prefix}assets/img/og.jpg">
+  <meta property="og:image" content="{prefix}assets/img/{og}">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Nidheesh Narayanan, senior frontend and WordPress developer in Dubai">
+  <meta property="og:image:alt" content="{og_alt}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{desc}">
-  <meta name="twitter:image" content="{prefix}assets/img/og.jpg">
+  <meta name="twitter:image" content="{prefix}assets/img/{og}">
+  <meta name="twitter:image:alt" content="{og_alt}">
   <link rel="icon" href="{prefix}favicon.svg" type="image/svg+xml">
   <link rel="icon" href="{prefix}favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="{prefix}apple-touch-icon.png">
@@ -205,10 +210,10 @@ faq = '\n'.join(f'''          <details class="qa">
             <p class="qa__a">{a}</p>
           </details>''' for q, a in FAQ)
 
-index = head('Nidheesh Narayanan, Senior Frontend &amp; WordPress Developer in Dubai',
-             'Senior frontend and WordPress developer in Dubai. Fast, accessible websites in English and Arabic for UAE government bodies and brands, nine years running.', '',
+index = head('Nidheesh Narayanan | Senior Frontend Developer in Dubai: React, Next.js &amp; WordPress',
+             'Senior frontend developer in Dubai working in React, Next.js and WordPress. Fast, accessible websites in English and Arabic for UAE government bodies and brands.', '',
              f'  <link rel="preload" as="image" href="assets/img/me/portrait-back.webp?v={ASSET_V}" imagesrcset="assets/img/me/portrait-back-760.webp?v={ASSET_V} 646w, assets/img/me/portrait-back.webp?v={ASSET_V} 1191w" imagesizes="(max-width: 760px) 90vw, 50vw" fetchpriority="high">\n') + \
-'''  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Person", "@id": "{{SITE_URL}}/#person", "name": "Nidheesh Narayanan", "url": "{{SITE_URL}}/", "image": "{{SITE_URL}}/assets/img/og.jpg", "jobTitle": "Senior Frontend & WordPress Developer", "worksFor": {"@type": "Organization", "name": "GTECH Information Technology"}, "email": "mailto:hello.nidheesh@gmail.com", "address": {"@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE"}, "sameAs": ["https://www.linkedin.com/in/nidheesh-narayanan-b9180853/"], "knowsLanguage": ["English", "Malayalam", "Hindi", "Tamil"], "knowsAbout": ["WordPress", "Elementor", "WPML", "PHP", "React", "Next.js", "TypeScript", "Web accessibility", "WCAG 2.1", "Arabic RTL websites", "Core Web Vitals", "Multilingual SEO"]}, {"@type": "WebSite", "@id": "{{SITE_URL}}/#website", "url": "{{SITE_URL}}/", "name": "Nidheesh Narayanan", "inLanguage": "en", "publisher": {"@id": "{{SITE_URL}}/#person"}}, {"@type": "ProfilePage", "@id": "{{SITE_URL}}/#profile", "url": "{{SITE_URL}}/", "name": "Nidheesh Narayanan, Senior Frontend & WordPress Developer in Dubai", "mainEntity": {"@id": "{{SITE_URL}}/#person"}, "isPartOf": {"@id": "{{SITE_URL}}/#website"}}]}</script>
+'''  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Person", "@id": "{{SITE_URL}}/#person", "name": "Nidheesh Narayanan", "url": "{{SITE_URL}}/", "image": "{{SITE_URL}}/assets/img/og.jpg", "jobTitle": "Senior Frontend Developer", "worksFor": {"@type": "Organization", "name": "GTECH Information Technology"}, "email": "mailto:hello.nidheesh@gmail.com", "address": {"@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE"}, "sameAs": ["https://www.linkedin.com/in/nidheesh-narayanan-b9180853/"], "knowsLanguage": ["English", "Malayalam", "Hindi", "Tamil"], "knowsAbout": ["WordPress", "Elementor", "WPML", "PHP", "React", "Next.js", "TypeScript", "Web accessibility", "WCAG 2.1", "Arabic RTL websites", "Core Web Vitals", "Multilingual SEO"]}, {"@type": "WebSite", "@id": "{{SITE_URL}}/#website", "url": "{{SITE_URL}}/", "name": "Nidheesh Narayanan", "inLanguage": "en", "publisher": {"@id": "{{SITE_URL}}/#person"}}, {"@type": "ProfilePage", "@id": "{{SITE_URL}}/#profile", "url": "{{SITE_URL}}/", "name": "Nidheesh Narayanan | Senior Frontend Developer in Dubai: React, Next.js & WordPress", "mainEntity": {"@id": "{{SITE_URL}}/#person"}, "isPartOf": {"@id": "{{SITE_URL}}/#website"}}]}</script>
 </head>
 ''' + header('', '') + f'''
   <main id="main">
@@ -350,7 +355,7 @@ for slug, name, *_ in P:
           '"creator": {"@type": "Person", "@id": "{{SITE_URL}}/#person", "name": "Nidheesh Narayanan"}, "about": {"@type": "WebSite", "url": "https://' + host + '"}}, '
           '{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "{{SITE_URL}}/"}, '
           '{"@type": "ListItem", "position": 2, "name": "Work", "item": "{{SITE_URL}}/#work"}, {"@type": "ListItem", "position": 3, "name": "' + name + '", "item": "{{SITE_URL}}/work/' + slug + '"}]}]}</script>\n')
-    page = head(title, desc, '../', ld) + '</head>\n' + header('../index.html', '../') + '\n  ' + main + '\n' + footer('../index.html', '../') + SCRIPTS('../')
+    page = head(title, desc, '../', ld, f'og/{slug}.jpg', f'{html.escape(name)} website, built by Nidheesh Narayanan') + '</head>\n' + header('../index.html', '../') + '\n  ' + main + '\n' + footer('../index.html', '../') + SCRIPTS('../')
     open(f, 'w').write(page)
 print('ok')
 
