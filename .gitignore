@@ -1,0 +1,15 @@
+# local only / private
+_backup/
+.playwright-mcp/
+assets/files/
+assets/img/me/portrait3*
+assets/img/me/portrait4*
+.htaccess
+
+# build output (python3 tools/build_dist.py)
+dist/
+
+# system
+.DS_Store
+__pycache__/
+node_modules/
