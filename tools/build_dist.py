@@ -61,11 +61,12 @@ m1 = minify('assets/css/style.css', os.path.join(DIST, 'assets/css/style.css'), 
 m2 = minify('assets/js/main.js', os.path.join(DIST, 'assets/js/main.js'), 'js')
 
 # ---------- pages ----------
-GTM_HEAD = f'''  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{'gtm.start':new Date().getTime(),event:'gtm.js'}});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}})(window,document,'script','dataLayer','{GTM}');</script>
+# Google tag (GTM-xxxx container ID issued by GA4): defines gtag() so main.js sends its events straight to GA4
+GTM_HEAD = f'''  <!-- Google tag -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id={GTM}"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());</script>
 ''' if GTM else ''
-GTM_BODY = f'''  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM}" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
-''' if GTM else ''
+GTM_BODY = ''
 GA4_HEAD = f'''  <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id={GA4}"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA4}');</script>
@@ -98,10 +99,11 @@ for p in pages:
     if p == 'index.html':
         h = h.replace('<meta property="og:type" content="website">', '<meta property="og:type" content="profile">', 1)
     if GTM:
-        h = h.replace('<head>\n', '<head>\n' + GTM_HEAD, 1)
-        h = h.replace('<body>\n', '<body>\n' + GTM_BODY, 1)
+        vp = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        h = h.replace(vp, vp + GTM_HEAD, 1)
     elif GA4:
-        h = h.replace('<head>\n', '<head>\n' + GA4_HEAD, 1)
+        vp = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        h = h.replace(vp, vp + GA4_HEAD, 1)
     if GSV and p == 'index.html':
         h = h.replace('  <meta name="author"', GSV_META + '  <meta name="author"', 1)
     out = os.path.join(DIST, p)

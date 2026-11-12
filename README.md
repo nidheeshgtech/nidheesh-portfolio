@@ -21,7 +21,7 @@ Preview the build like Cloudflare does (clean URLs, 404, headers): `python3 tool
 ## Google tracking
 Set in `site.config.json`, then push (Vercel rebuilds):
 - `ga4_id`: `G-XXXXXXXXXX`. Loads GA4 directly; the events below are sent as GA4 events.
-- or `gtm_id`: `GTM-XXXXXXX`. Loads Tag Manager instead (ga4_id is then ignored; add the GA4 tag inside GTM). Events arrive as dataLayer pushes.
+- or `gtm_id`: `GTM-XXXXXXX`, the Google tag ID that GA4 gives (current: GTM-T4MHBNGS, managed in GA4 > Admin > Data streams > Configure tag settings, not in tagmanager.google.com). The page defines gtag(), so the events below go straight to GA4. ga4_id is then ignored.
 - `google_site_verification`: the `content` value from Search Console's HTML tag method (added to the home page only).
 
 | event | params |
@@ -32,8 +32,6 @@ Set in `site.config.json`, then push (Vercel rebuilds):
 | `outbound_click` | `link_url`, `link_location` |
 | `faq_open` | `question` |
 | `section_view` | `section` (work, services, about, contact) |
-
-GTM: import `tools/gtm-portfolio-events.json` (Admin > Import container > Merge, rename conflicts) to send all events above to GA4, then Submit/Publish.
 
 In GA4: Admin > Custom definitions > add event-scoped dimensions `contact_method`, `link_location`, `project`, `section`, `question`, `link_url`;
 Admin > Key events > mark `contact_click` and `email_copy`. CSP (vercel.json / _headers) already allows Google's domains.
