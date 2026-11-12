@@ -33,5 +33,7 @@ Set in `site.config.json`, then push (Vercel rebuilds):
 | `faq_open` | `question` |
 | `section_view` | `section` (work, services, about, contact) |
 
-In GA4: Admin > Custom definitions > add event-scoped dimensions `contact_method`, `link_location`, `project`, `section`, `question`;
+GTM: import `tools/gtm-portfolio-events.json` (Admin > Import container > Merge, rename conflicts) to send all events above to GA4, then Submit/Publish.
+
+In GA4: Admin > Custom definitions > add event-scoped dimensions `contact_method`, `link_location`, `project`, `section`, `question`, `link_url`;
 Admin > Key events > mark `contact_click` and `email_copy`. CSP (vercel.json / _headers) already allows Google's domains.
