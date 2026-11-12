@@ -1,5 +1,7 @@
 {
   "site_url": "https://nidheeshnarayanan.vercel.app",
+  "ga4_id": "",
   "gtm_id": "",
-  "_help": "Set site_url to your domain (no trailing slash) and gtm_id to your container ID like GTM-XXXXXXX, then run: python3 tools/build_dist.py"
+  "google_site_verification": "",
+  "_help": "ga4_id = G-XXXXXXXXXX (simplest), or gtm_id = GTM-XXXXXXX (then GA4 is set up inside GTM and ga4_id is ignored). google_site_verification = the content value of Search Console's HTML-tag method. Then push; Vercel rebuilds."
 }

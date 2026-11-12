@@ -18,16 +18,20 @@ Preview the build like Cloudflare does (clean URLs, 404, headers): `python3 tool
 - Font previews (not deployed): `font-bricolage.html`, `font-funnel.html`, `font-instrument.html` — `tools/font_variants.py`.
 - Case pages still need your own paragraph on role, challenges and results (none were invented).
 
-## GTM / dataLayer events (pushed by main.js)
+## Google tracking
+Set in `site.config.json`, then push (Vercel rebuilds):
+- `ga4_id`: `G-XXXXXXXXXX`. Loads GA4 directly; the events below are sent as GA4 events.
+- or `gtm_id`: `GTM-XXXXXXX`. Loads Tag Manager instead (ga4_id is then ignored; add the GA4 tag inside GTM). Events arrive as dataLayer pushes.
+- `google_site_verification`: the `content` value from Search Console's HTML tag method (added to the home page only).
+
 | event | params |
 |---|---|
-| `contact_click` | `contact_method` (email, phone, whatsapp, linkedin), `link_location` |
+| `contact_click` | `contact_method` (email, linkedin), `link_location` |
 | `email_copy` | `link_location` |
 | `case_study_click` | `project`, `link_location` |
 | `outbound_click` | `link_url`, `link_location` |
 | `faq_open` | `question` |
 | `section_view` | `section` (work, services, about, contact) |
 
-In GTM: add a GA4 Configuration tag (All Pages), then Custom Event triggers for the events above with GA4 Event tags,
-Data Layer Variables for the params, and mark `contact_click` + `email_copy` as key events in GA4.
-CSP in `_headers` already allows GTM + GA4; if you add other vendors (Hotjar, Clarity…) add their domains there.
+In GA4: Admin > Custom definitions > add event-scoped dimensions `contact_method`, `link_location`, `project`, `section`, `question`;
+Admin > Key events > mark `contact_click` and `email_copy`. CSP (vercel.json / _headers) already allows Google's domains.

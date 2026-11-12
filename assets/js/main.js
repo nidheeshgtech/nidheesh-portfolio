@@ -10,11 +10,12 @@
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- analytics: dataLayer events for Google Tag Manager (harmless without GTM) ----------
+  /* ---------- analytics: GA4 (gtag) or Google Tag Manager (dataLayer); harmless with neither ----------
      events: contact_click {contact_method, link_location} · email_copy · case_study_click {project, link_location}
              outbound_click {link_url} · section_view {section} · faq_open {question} */
   window.dataLayer = window.dataLayer || [];
-  const track = (event, data = {}) => window.dataLayer.push({ event, ...data });
+  // GA4 direct (gtag on the page) gets real GA events; with GTM the dataLayer push feeds its triggers
+  const track = (event, data = {}) => (typeof window.gtag === 'function' ? window.gtag('event', event, data) : window.dataLayer.push({ event, ...data }));
   const whereIs = (el) => {
     const zone = el.closest('.site-header, .menu, .hero, .projects, .more, .case-head, .case-next, .footer, .services, .faq__list');
     return zone ? zone.className.split(' ')[0].replace(/^site-/, '') : 'page';
@@ -25,8 +26,6 @@
     const href = a.getAttribute('href');
     const loc = whereIs(a);
     if (href.startsWith('mailto:')) return track('contact_click', { contact_method: 'email', link_location: loc });
-    if (href.startsWith('tel:')) return track('contact_click', { contact_method: 'phone', link_location: loc });
-    if (href.includes('wa.me/')) return track('contact_click', { contact_method: 'whatsapp', link_location: loc });
     if (href.includes('linkedin.com/')) return track('contact_click', { contact_method: 'linkedin', link_location: loc });
     if (/(^|\/)work\/[a-z0-9-]+(\.html)?$/.test(href) || (a.closest('.case-next'))) {
       const name = a.querySelector('.project__name, .more__name, .case-next__name');

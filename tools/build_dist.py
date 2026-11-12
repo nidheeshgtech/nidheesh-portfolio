@@ -12,6 +12,11 @@ os.chdir(ROOT)
 cfg = json.load(open('site.config.json'))
 SITE = cfg['site_url'].rstrip('/')
 GTM = cfg.get('gtm_id', '').strip()
+GA4 = '' if GTM else cfg.get('ga4_id', '').strip()          # with GTM, set GA4 up inside the container instead
+GSV = cfg.get('google_site_verification', '').strip()
+for k, v, pat in (('gtm_id', GTM, r'GTM-[A-Z0-9]+'), ('ga4_id', GA4, r'G-[A-Z0-9]+')):
+    if v and not re.fullmatch(pat, v):
+        raise SystemExit(f'site.config.json: {k} "{v}" does not look like {pat}')
 DIST = os.path.join(ROOT, 'dist')
 TODAY = datetime.date.today().isoformat()
 
@@ -61,6 +66,11 @@ GTM_HEAD = f'''  <!-- Google Tag Manager -->
 ''' if GTM else ''
 GTM_BODY = f'''  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM}" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 ''' if GTM else ''
+GA4_HEAD = f'''  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={GA4}"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA4}');</script>
+''' if GA4 else ''
+GSV_META = f'  <meta name="google-site-verification" content="{GSV}">\n' if GSV else ''
 
 def clean_url(path):
     """work/ai71.html -> /work/ai71 ; index.html -> /"""
@@ -90,6 +100,10 @@ for p in pages:
     if GTM:
         h = h.replace('<head>\n', '<head>\n' + GTM_HEAD, 1)
         h = h.replace('<body>\n', '<body>\n' + GTM_BODY, 1)
+    elif GA4:
+        h = h.replace('<head>\n', '<head>\n' + GA4_HEAD, 1)
+    if GSV and p == 'index.html':
+        h = h.replace('  <meta name="author"', GSV_META + '  <meta name="author"', 1)
     out = os.path.join(DIST, p)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w').write(h)
@@ -140,6 +154,6 @@ open(os.path.join(DIST, '_redirects'), 'w').write('/index /  301\n/home /  301\n
 # ---------- report ----------
 size = sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(DIST) for f in fs)
 files = sum(len(fs) for _, _, fs in os.walk(DIST))
-print(f'dist/ ready: {files} files, {size / 1024 / 1024:.2f} MB | css {m1}, js {m2} | GTM {"on: " + GTM if GTM else "off (no gtm_id)"} | site {SITE}')
+print(f'dist/ ready: {files} files, {size / 1024 / 1024:.2f} MB | css {m1}, js {m2} | tracking {"GTM " + GTM if GTM else ("GA4 " + GA4 if GA4 else "off")} | site {SITE}')
 if 'example.com' in SITE:
     print('NOTE: site_url is still example.com. Set your domain in site.config.json and build again before publishing.')
