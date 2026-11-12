@@ -25,7 +25,7 @@ if os.path.isdir(DIST):
 os.makedirs(DIST)
 
 # ---------- files that go live ----------
-COPY = ['favicon.svg', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'site.webmanifest',
+COPY = ['google29a0cf86c7f09bb7.html', 'favicon.svg', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'site.webmanifest',
         'assets/fonts', 'assets/js/vendor', 'assets/img/og.jpg', 'assets/img/og', 'assets/img/icon-192.png', 'assets/img/icon-512.png',
         'assets/img/me/portrait-back.webp', 'assets/img/me/portrait-back-760.webp']
 pages = ['index.html', '404.html'] + sorted(glob.glob('work/*.html'))

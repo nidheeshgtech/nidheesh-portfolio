@@ -3,7 +3,7 @@
   "buildCommand": "python3 tools/build_dist.py",
   "outputDirectory": "dist",
   "framework": null,
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "headers": [
     {
@@ -73,6 +73,16 @@
   ],
   "redirects": [
     {
+      "source": "/work/:slug.html",
+      "destination": "/work/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/index",
       "destination": "/",
       "permanent": true
@@ -91,6 +101,12 @@
       "source": "/contact",
       "destination": "/#contact",
       "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/work/:slug",
+      "destination": "/work/:slug.html"
     }
   ]
 }
